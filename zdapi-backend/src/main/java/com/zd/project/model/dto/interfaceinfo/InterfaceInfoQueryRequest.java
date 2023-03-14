@@ -1,22 +1,27 @@
-package com.zd.project.model.entity;
+package com.zd.project.model.dto.interfaceinfo;
 
-import com.baomidou.mybatisplus.annotation.*;
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableLogic;
+import com.zd.project.common.PageRequest;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 接口信息
- * @TableName interface_info
+ * 查询请求
+ *
+ * @author zd
  */
-@TableName(value ="interface_info")
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class InterfaceInfo implements Serializable {
+public class InterfaceInfoQueryRequest extends PageRequest implements Serializable {
+
     /**
      * 主键
      */
-    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
@@ -60,21 +65,7 @@ public class InterfaceInfo implements Serializable {
     private Long userId;
 
     /**
-     * 创建时间
-     */
-    private Date createTime;
-
-    /**
-     * 更新时间
-     */
-    private Date updateTime;
-
-    /**
      * 是否删除(0-未删, 1-已删)
      */
-    @TableLogic
     private Integer isDelete;
-
-    @TableField(exist = false)
-    private static final long serialVersionUID = 1L;
 }

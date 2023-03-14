@@ -9,7 +9,7 @@
         <version>2.7.0</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.yupi</groupId>
+    <groupId>com.zd</groupId>
     <artifactId>zdapi-backend</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>zdapi-backend</name>

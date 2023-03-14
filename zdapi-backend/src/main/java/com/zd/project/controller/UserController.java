@@ -8,8 +8,8 @@ import com.zd.project.common.DeleteRequest;
 import com.zd.project.common.ErrorCode;
 import com.zd.project.common.ResultUtils;
 import com.zd.project.exception.BusinessException;
-import com.yupi.project.model.dto.*;
-import com.yupi.project.model.dto.user.*;
+import com.zd.project.model.dto.*;
+import com.zd.project.model.dto.user.*;
 import com.zd.project.model.dto.user.*;
 import com.zd.project.model.entity.User;
 import com.zd.project.model.vo.UserVO;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 /**
  * 用户接口
  *
- * @author yupi
+ * @author zd
  */
 @RestController
 @RequestMapping("/user")

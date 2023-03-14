@@ -3,7 +3,7 @@ package com.zd.project.constant;
 /**
  * 用户常量
  *
- * @author yupi
+ * @author zd
  */
 public interface UserConstant {
 

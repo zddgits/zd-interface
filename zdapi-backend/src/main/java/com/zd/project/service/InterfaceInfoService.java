@@ -2,6 +2,7 @@ package com.zd.project.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zd.project.model.entity.InterfaceInfo;
+import com.zd.project.model.entity.Post;
 
 /**
 * @author zdsss
@@ -9,5 +10,5 @@ import com.zd.project.model.entity.InterfaceInfo;
 * @createDate 2023-03-14 19:55:22
 */
 public interface InterfaceInfoService extends IService<InterfaceInfo> {
-
+    void validInterfaceInfo(InterfaceInfo interfaceInfo, boolean add);
 }

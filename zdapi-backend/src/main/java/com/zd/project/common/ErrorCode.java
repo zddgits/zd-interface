@@ -3,7 +3,7 @@ package com.zd.project.common;
 /**
  * 错误码
  *
- * @author yupi
+ * @author zd
  */
 public enum ErrorCode {
 

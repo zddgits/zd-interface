@@ -3,7 +3,7 @@ package com.zd.project.constant;
 /**
  * 通用常量
  *
- * @author yupi
+ * @author zd
  */
 public interface CommonConstant {
 
