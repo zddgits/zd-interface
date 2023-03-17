@@ -14,28 +14,19 @@ import { FormattedMessage, useIntl } from '@umijs/max';
 import { Button, Drawer, Input, message } from 'antd';
 import React, { useRef, useState } from 'react';
 import type { FormValueType } from './components/UpdateForm';
-import UpdateForm from './components/UpdateForm';
-import {listInterfaceInfoByPageUsingGET} from "@/services/zdapi-backend/interfaceInfoController";
+import UpdateModal from './components/UpdateForm';
+import {
+  addInterfaceInfoUsingPOST,
+  listInterfaceInfoByPageUsingGET
+} from "@/services/zdapi-backend/interfaceInfoController";
 import {SortOrder} from "antd/es/table/interface";
+import CreateModal from "@/pages/InterfaceInfo/components/CreateModal";
 
 /**
  * @en-US Add node
  * @zh-CN 添加节点
  * @param fields
  */
-const handleAdd = async (fields: API.RuleListItem) => {
-  const hide = message.loading('正在添加');
-  try {
-    await addRule({ ...fields });
-    hide();
-    message.success('Added successfully');
-    return true;
-  } catch (error) {
-    hide();
-    message.error('Adding failed, please try again!');
-    return false;
-  }
-};
 
 /**
  * @en-US Update node
@@ -102,7 +93,20 @@ const TableList: React.FC = () => {
   const actionRef = useRef<ActionType>();
   const [currentRow, setCurrentRow] = useState<API.RuleListItem>();
   const [selectedRowsState, setSelectedRows] = useState<API.RuleListItem[]>([]);
-
+  const handleAdd = async (fields: API.InterfaceInfo) => {
+    const hide = message.loading('正在添加');
+    try {
+      await addInterfaceInfoUsingPOST({ ...fields });
+      hide();
+      message.success('添加成功');
+      handleModalOpen(false);
+      return true;
+    } catch (error:any) {
+      hide();
+      message.error('添加失败.'+ error.message);
+      return false;
+    }
+  };
   /**
    * @en-US International configuration
    * @zh-CN 国际化配置
@@ -164,11 +168,13 @@ const TableList: React.FC = () => {
       title:'创建时间',
       dataIndex: 'createTime',
       valueType:'dateTime',
+      hideInForm:true
     },
     {
       title:'更新时间',
       dataIndex: 'updateTime',
       valueType:'dateTime',
+      hideInForm:true
     },
     {
       title: <FormattedMessage id="pages.searchTable.titleOption" defaultMessage="操作" />,
@@ -182,18 +188,13 @@ const TableList: React.FC = () => {
             setCurrentRow(record);
           }}
         >
-          <FormattedMessage id="pages.searchTable.config" defaultMessage="配置" />
-        </a>,
-        <a key="subscribeAlert" href="https://procomponents.ant.design/">
-          <FormattedMessage
-            id="pages.searchTable.subscribeAlert"
-            defaultMessage="订阅"
-          />
-        </a>,
+          <FormattedMessage id="pages.searchTable.config" defaultMessage="修改" />
+        </a>
       ],
     },
   ];
 
+  // @ts-ignore
   return (
     <PageContainer>
       <ProTable<API.RuleListItem, API.PageParams>
@@ -218,17 +219,24 @@ const TableList: React.FC = () => {
           </Button>,
         ]}
         request={async (params,sort:Record<string,SortOrder>,filter:Record<string,React.ReactText[]|null>)=>{
-          const res = await listInterfaceInfoByPageUsingGET({
+          const res:any = await listInterfaceInfoByPageUsingGET({
               ...params
           })
           if (res?.data){
-          return {
-            data :res?.data.records ||[],
-            success:true,
-            total:res.data.total,
+            return {
+              data :res?.data.records ||[],
+              success:true,
+              total:res.data.total,
+            }
+          }else {
+            return {
+              data :[],
+              success:false,
+              total:0,
+            }
           }
         }
-          }}
+        }
         columns={columns}
         rowSelection={{
           onChange: (_, selectedRows) => {
@@ -275,42 +283,7 @@ const TableList: React.FC = () => {
           </Button>
         </FooterToolbar>
       )}
-      <ModalForm
-        title={intl.formatMessage({
-          id: 'pages.searchTable.createForm.newRule',
-          defaultMessage: 'New rule',
-        })}
-        width="400px"
-        open={createModalOpen}
-        onOpenChange={handleModalOpen}
-        onFinish={async (value) => {
-          const success = await handleAdd(value as API.RuleListItem);
-          if (success) {
-            handleModalOpen(false);
-            if (actionRef.current) {
-              actionRef.current.reload();
-            }
-          }
-        }}
-      >
-        <ProFormText
-          rules={[
-            {
-              required: true,
-              message: (
-                <FormattedMessage
-                  id="pages.searchTable.ruleName"
-                  defaultMessage="Rule name is required"
-                />
-              ),
-            },
-          ]}
-          width="md"
-          name="name"
-        />
-        <ProFormTextArea width="md" name="desc" />
-      </ModalForm>
-      <UpdateForm
+      <UpdateModal
         onSubmit={async (value) => {
           const success = await handleUpdate(value);
           if (success) {
@@ -354,6 +327,7 @@ const TableList: React.FC = () => {
           />
         )}
       </Drawer>
+      <CreateModal columns={columns} onCancel={()=>handleModalOpen(false)} onSubmit={(valus)=>{handleAdd(valus)}} visible={createModalOpen}></CreateModal>
     </PageContainer>
   );
 };
