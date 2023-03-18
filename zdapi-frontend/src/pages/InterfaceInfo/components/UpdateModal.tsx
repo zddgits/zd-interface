@@ -1,25 +1,36 @@
-import {
-  ProColumns,
-  ProTable,
-} from '@ant-design/pro-components';
+import {ProColumns, ProFormInstance, ProTable} from '@ant-design/pro-components';
 import '@umijs/max';
 import { Modal } from 'antd';
-import React from 'react';
+import React, {useEffect, useRef} from 'react';
 
 export type Props = {
-  columns :ProColumns<API.InterfaceInfo>[];
+  values: API.InterfaceInfo;
+  columns: ProColumns<API.InterfaceInfo>[];
   onCancel: () => void;
-  onSubmit: (valus: API.InterfaceInfo) => Promise<void>;
+  onSubmit: (values: API.InterfaceInfo) => Promise<void>;
   visible: boolean;
 };
 
-const CreateModal: React.FC<Props> = (props) => {
-  const {visible,columns,onCancel,onSubmit} = props;
-  return<Modal visible={visible} onCancel={()=>onCancel?.()}>
-    <ProTable type="form" columns={columns} onSubmit={async (value) => {
-      onSubmit?.(value);
-    }}/>
-  </Modal>
+const UpdateModal: React.FC<Props> = (props) => {
+  const {values, visible, columns, onCancel, onSubmit } = props;
+  const formRef = useRef<ProFormInstance>();
+  useEffect(()=>{
+    if(formRef) {
+      formRef.current?.setFieldsValue(values);
+    }
+  },[values])
+  return (
+    <Modal visible={visible} footer={null} onCancel={() => onCancel?.()}>
+      <ProTable
+        type="form"
+        formRef={formRef}
+        columns={columns}
+        onSubmit={async (value:any) => {
+          onSubmit?.(value);
+        }}
+      />
+    </Modal>
+  );
 };
 
-export default CreateModal;
+export default UpdateModal;
