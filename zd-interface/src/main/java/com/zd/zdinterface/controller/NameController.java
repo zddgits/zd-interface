@@ -1,7 +1,7 @@
 package com.zd.zdinterface.controller;
 
-import com.zd.zdinterface.model.User;
-import com.zd.zdinterface.utils.SignUtils;
+import com.zd.zdapiclientsdk.model.User;
+import com.zd.zdapiclientsdk.utils.SignUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
