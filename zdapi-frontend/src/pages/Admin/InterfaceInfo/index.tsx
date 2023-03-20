@@ -16,7 +16,7 @@ import {
   listInterfaceInfoByPageUsingGET, updateInterfaceInfoUsingPOST
 } from "@/services/zdapi-backend/interfaceInfoController";
 import {SortOrder} from "antd/es/table/interface";
-import CreateModal from "@/pages/InterfaceInfo/components/CreateModal";
+import CreateModal from "@/pages/Admin/InterfaceInfo/components/CreateModal";
 
 
 
