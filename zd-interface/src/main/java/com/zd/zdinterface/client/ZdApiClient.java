@@ -50,8 +50,6 @@ public class ZdApiClient {
     public  String getUserNameByPost(User user) {
         String json = JSONUtil.toJsonStr(user);
         HttpResponse httpResponse = HttpRequest.post("http://localhost:8123/api/name/user")
-                .header(Header.ACCEPT,"application/json;charset=UTF-8;")
-                .header(Header.CONTENT_TYPE,"application/json;charset=UTF-8;")
                 .charset(CharsetUtil.UTF_8)
                 .addHeaders(getHeaderMap(json))
                 .body(json)
